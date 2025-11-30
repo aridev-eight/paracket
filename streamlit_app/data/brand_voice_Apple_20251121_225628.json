@@ -1,0 +1,47 @@
+{
+  "company": "Apple",
+  "brand_voice": {
+    "tone": "Professional with a friendly and engaging undertone",
+    "personality_traits": [
+      "innovative",
+      "inspirational",
+      "visionary",
+      "customer-focused"
+    ],
+    "vocabulary_level": "Technical yet accessible",
+    "sentence_style": "A mix of short and punchy with longer, descriptive sentences",
+    "common_phrases": [
+      "Learn more",
+      "Introducing",
+      "Discover",
+      "Explore"
+    ],
+    "main_topics": [
+      "product launches",
+      "technological innovation",
+      "user stories",
+      "environmental initiatives"
+    ],
+    "values": [
+      "innovation",
+      "quality",
+      "sustainability",
+      "customer satisfaction"
+    ],
+    "humor_style": "Subtle and clever, occasionally playful",
+    "formality_level": "Moderately formal",
+    "voice_consistency": "Consistently active voice, with third person narrative",
+    "writing_guidelines": [
+      "Maintain a balance between technical detail and accessibility",
+      "Emphasize Apple's commitment to quality and innovation",
+      "Highlight customer experiences and success stories",
+      "Use a consistent structure across platforms while adapting to the medium"
+    ]
+  },
+  "analyzed_at": "2025-11-21T22:56:28.989435",
+  "total_samples_analyzed": 20,
+  "sources": [
+    "youtube",
+    "blog"
+  ]
+}

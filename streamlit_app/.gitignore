@@ -1,0 +1,36 @@
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Data files - track brand voice profiles and scheduled posts
+# First ignore everything in data/, then selectively allow what we need
+data/*
+!data/brand_voice_*.json
+!data/scheduled_posts/
+!data/scheduled_posts/*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local

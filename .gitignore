@@ -1,0 +1,9 @@
+# Old n8n workflow files - excluded from repo
+old_files/
+
+# macOS
+.DS_Store
+
+# Python cache (in case of any root-level scripts)
+__pycache__/
+*.pyc

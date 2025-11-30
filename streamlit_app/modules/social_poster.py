@@ -1,0 +1,232 @@
+"""
+Social Media Poster Module
+Posts content to Twitter/X, Reddit, and Mastodon
+"""
+import os
+from datetime import datetime
+
+
+def post_to_twitter(content, credentials):
+    """
+    Post content to Twitter/X using API v2
+
+    Args:
+        content: Text content to post
+        credentials: Dict with api_key, api_secret, access_token, access_secret
+
+    Returns:
+        Dict with success status and post URL or error message
+    """
+    try:
+        import tweepy
+
+        # Authenticate with Twitter API v2
+        client = tweepy.Client(
+            consumer_key=credentials['api_key'],
+            consumer_secret=credentials['api_secret'],
+            access_token=credentials['access_token'],
+            access_token_secret=credentials['access_secret']
+        )
+
+        # Post tweet
+        response = client.create_tweet(text=content)
+
+        tweet_id = response.data['id']
+        tweet_url = f"https://twitter.com/user/status/{tweet_id}"
+
+        return {
+            'success': True,
+            'url': tweet_url,
+            'tweet_id': tweet_id,
+            'posted_at': datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        return {
+            'success': False,
+            'error': str(e),
+            'failed_at': datetime.now().isoformat()
+        }
+
+
+def post_to_reddit(content, subreddit, credentials):
+    """
+    Post content to Reddit
+
+    Args:
+        content: Text content (should include title on first line, body after)
+        subreddit: Target subreddit name (without r/)
+        credentials: Dict with client_id, client_secret, username, password
+
+    Returns:
+        Dict with success status and post URL or error message
+    """
+    try:
+        import praw
+
+        # Parse title and body from content
+        lines = content.split('\n', 1)
+        title = lines[0].strip()
+        body = lines[1].strip() if len(lines) > 1 else ""
+
+        # Authenticate with Reddit
+        reddit = praw.Reddit(
+            client_id=credentials['client_id'],
+            client_secret=credentials['client_secret'],
+            username=credentials['username'],
+            password=credentials['password'],
+            user_agent='paracket_poster/1.0'
+        )
+
+        # Submit post
+        submission = reddit.subreddit(subreddit).submit(
+            title=title,
+            selftext=body
+        )
+
+        post_url = f"https://reddit.com{submission.permalink}"
+
+        return {
+            'success': True,
+            'url': post_url,
+            'post_id': submission.id,
+            'posted_at': datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        return {
+            'success': False,
+            'error': str(e),
+            'failed_at': datetime.now().isoformat()
+        }
+
+
+def post_to_mastodon(content, credentials):
+    """
+    Post content to Mastodon
+
+    Args:
+        content: Text content to post
+        credentials: Dict with instance (URL) and access_token
+
+    Returns:
+        Dict with success status and post URL or error message
+    """
+    try:
+        from mastodon import Mastodon
+
+        # Create Mastodon instance
+        mastodon = Mastodon(
+            access_token=credentials['access_token'],
+            api_base_url=credentials['instance']
+        )
+
+        # Post toot
+        status = mastodon.status_post(content)
+
+        post_url = status['url']
+
+        return {
+            'success': True,
+            'url': post_url,
+            'post_id': status['id'],
+            'posted_at': datetime.now().isoformat()
+        }
+
+    except Exception as e:
+        return {
+            'success': False,
+            'error': str(e),
+            'failed_at': datetime.now().isoformat()
+        }
+
+
+def post_to_platforms(scheduled_post):
+    """
+    Post to all enabled platforms for a scheduled post
+
+    Args:
+        scheduled_post: Dict containing platforms, credentials, and content
+
+    Returns:
+        Dict with results for each platform
+    """
+    results = {
+        'posted_at': datetime.now().isoformat(),
+        'platforms': {}
+    }
+
+    platforms = scheduled_post.get('platforms', {})
+    credentials = scheduled_post.get('credentials', {})
+
+    # Twitter
+    if 'twitter' in platforms and platforms['twitter'].get('enabled'):
+        print("Posting to Twitter...")
+        content = platforms['twitter']['content']
+        twitter_creds = credentials.get('twitter', {})
+
+        if twitter_creds:
+            result = post_to_twitter(content, twitter_creds)
+            results['platforms']['twitter'] = result
+
+            if result['success']:
+                print(f"  ✓ Posted to Twitter: {result['url']}")
+            else:
+                print(f"  ✗ Twitter failed: {result['error']}")
+        else:
+            results['platforms']['twitter'] = {
+                'success': False,
+                'error': 'Missing Twitter credentials'
+            }
+            print("  ✗ Missing Twitter credentials")
+
+    # Reddit
+    if 'reddit' in platforms and platforms['reddit'].get('enabled'):
+        print("Posting to Reddit...")
+        content = platforms['reddit']['content']
+        subreddit = platforms['reddit'].get('subreddit', 'test')
+        reddit_creds = credentials.get('reddit', {})
+
+        if reddit_creds:
+            result = post_to_reddit(content, subreddit, reddit_creds)
+            results['platforms']['reddit'] = result
+
+            if result['success']:
+                print(f"  ✓ Posted to Reddit: {result['url']}")
+            else:
+                print(f"  ✗ Reddit failed: {result['error']}")
+        else:
+            results['platforms']['reddit'] = {
+                'success': False,
+                'error': 'Missing Reddit credentials'
+            }
+            print("  ✗ Missing Reddit credentials")
+
+    # Mastodon
+    if 'mastodon' in platforms and platforms['mastodon'].get('enabled'):
+        print("Posting to Mastodon...")
+        content = platforms['mastodon']['content']
+        mastodon_creds = credentials.get('mastodon', {})
+
+        if mastodon_creds:
+            result = post_to_mastodon(content, mastodon_creds)
+            results['platforms']['mastodon'] = result
+
+            if result['success']:
+                print(f"  ✓ Posted to Mastodon: {result['url']}")
+            else:
+                print(f"  ✗ Mastodon failed: {result['error']}")
+        else:
+            results['platforms']['mastodon'] = {
+                'success': False,
+                'error': 'Missing Mastodon credentials'
+            }
+            print("  ✗ Missing Mastodon credentials")
+
+    # Determine overall success
+    results['success'] = any(
+        p.get('success', False)
+        for p in results['platforms'].values()
+    )
+
+    return results

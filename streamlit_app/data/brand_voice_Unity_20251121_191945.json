@@ -1,0 +1,48 @@
+{
+  "company": "Unity",
+  "brand_voice": {
+    "tone": "Professional with a friendly and engaging edge",
+    "personality_traits": [
+      "innovative",
+      "community-focused",
+      "supportive",
+      "collaborative"
+    ],
+    "vocabulary_level": "Technical with accessible explanations",
+    "sentence_style": "Mix of short/punchy and long/complex",
+    "common_phrases": [
+      "Join us",
+      "Discover how",
+      "empower creators",
+      "your voice helps decide"
+    ],
+    "main_topics": [
+      "game development",
+      "Unity technology updates",
+      "community engagement",
+      "partnerships"
+    ],
+    "values": [
+      "innovation",
+      "creativity",
+      "community",
+      "collaboration"
+    ],
+    "humor_style": "Subtle and context-appropriate",
+    "formality_level": "Moderate, with a balance between professional and approachable",
+    "voice_consistency": "Consistent across platforms with slight variations to suit the medium",
+    "writing_guidelines": [
+      "Use industry-specific jargon appropriately",
+      "Engage the audience with direct calls to action",
+      "Highlight community involvement and collaboration",
+      "Include technical details to support claims",
+      "Use a mix of first and third person perspectives"
+    ]
+  },
+  "analyzed_at": "2025-11-21T19:19:45.339290",
+  "total_samples_analyzed": 20,
+  "sources": [
+    "youtube",
+    "blog"
+  ]
+}

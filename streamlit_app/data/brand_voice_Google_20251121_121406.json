@@ -1,0 +1,46 @@
+{
+  "company": "Google",
+  "brand_voice": {
+    "tone": "friendly and informative",
+    "personality_traits": [
+      "enthusiastic",
+      "approachable",
+      "innovative"
+    ],
+    "vocabulary_level": "accessible with some technical terms",
+    "sentence_style": "mix of short and long sentences",
+    "common_phrases": [
+      "excited about",
+      "working on",
+      "check out",
+      "rolling out"
+    ],
+    "main_topics": [
+      "Android features",
+      "AI advancements",
+      "user experience",
+      "technology integration"
+    ],
+    "values": [
+      "inclusivity",
+      "innovation",
+      "user empowerment",
+      "collaboration"
+    ],
+    "humor_style": "light and playful",
+    "formality_level": "casual",
+    "voice_consistency": "consistent across platforms with slight variations",
+    "writing_guidelines": [
+      "engage directly with the audience",
+      "use first-person perspective",
+      "emphasize new features and developments",
+      "maintain a balance between technical detail and user-friendly language"
+    ]
+  },
+  "analyzed_at": "2025-11-21T12:14:06.961190",
+  "total_samples_analyzed": 20,
+  "sources": [
+    "reddit",
+    "youtube"
+  ]
+}
